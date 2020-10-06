@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.UiThread;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -53,6 +56,8 @@ public class PhotoEditor implements BrushViewChangeListener {
     private boolean isTextPinchZoomable;
     private Typeface mDefaultTextTypeface;
     private Typeface mDefaultEmojiTypeface;
+
+    private int borderVisibilityDelay = 500;
 
 
     private PhotoEditor(Builder builder) {
@@ -97,6 +102,26 @@ public class PhotoEditor implements BrushViewChangeListener {
             @Override
             public void onLongClick() {
 
+            }
+
+            @Override
+            public void onScaleBegin() {
+                frmBorder.setBackgroundResource(R.drawable.rounded_border_tv);
+                imgClose.setVisibility(View.VISIBLE);
+                frmBorder.setTag(true);
+            }
+
+            @Override
+            public void onScaleEnd() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        frmBorder.setBackgroundResource(0);
+                        imgClose.setVisibility(View.GONE);
+                        frmBorder.setTag(false);
+                    }
+                }, borderVisibilityDelay);
             }
         });
 
@@ -149,7 +174,7 @@ public class PhotoEditor implements BrushViewChangeListener {
     public void addText(String text, @Nullable TextStyleBuilder styleBuilder) {
         brushDrawingView.setBrushDrawingMode(false);
         final View textRootView = getLayout(ViewType.TEXT);
-        final TextView textInputTv = textRootView.findViewById(R.id.tvPhotoEditorText);
+        final MagicTextView textInputTv = textRootView.findViewById(R.id.tvPhotoEditorText);
         final ImageView imgClose = textRootView.findViewById(R.id.imgPhotoEditorClose);
         final FrameLayout frmBorder = textRootView.findViewById(R.id.frmBorder);
 
@@ -174,6 +199,26 @@ public class PhotoEditor implements BrushViewChangeListener {
                 if (mOnPhotoEditorListener != null) {
                     mOnPhotoEditorListener.onEditTextChangeListener(textRootView, textInput, currentTextColor);
                 }
+            }
+
+            @Override
+            public void onScaleBegin() {
+                frmBorder.setBackgroundResource(R.drawable.rounded_border_tv);
+                imgClose.setVisibility(View.VISIBLE);
+                frmBorder.setTag(true);
+            }
+
+            @Override
+            public void onScaleEnd() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        frmBorder.setBackgroundResource(0);
+                        imgClose.setVisibility(View.GONE);
+                        frmBorder.setTag(false);
+                    }
+                }, borderVisibilityDelay);
             }
         });
 
@@ -218,7 +263,7 @@ public class PhotoEditor implements BrushViewChangeListener {
      * @param styleBuilder style to apply on {@link TextView}
      */
     public void editText(@NonNull View view, String inputText, @Nullable TextStyleBuilder styleBuilder) {
-        TextView inputTextView = view.findViewById(R.id.tvPhotoEditorText);
+        MagicTextView inputTextView = view.findViewById(R.id.tvPhotoEditorText);
         if (inputTextView != null && addedViews.contains(view) && !TextUtils.isEmpty(inputText)) {
             inputTextView.setText(inputText);
             if (styleBuilder != null)
@@ -271,6 +316,26 @@ public class PhotoEditor implements BrushViewChangeListener {
 
             @Override
             public void onLongClick() {
+            }
+
+            @Override
+            public void onScaleBegin() {
+                frmBorder.setBackgroundResource(R.drawable.rounded_border_tv);
+                imgClose.setVisibility(View.VISIBLE);
+                frmBorder.setTag(true);
+            }
+
+            @Override
+            public void onScaleEnd() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        frmBorder.setBackgroundResource(0);
+                        imgClose.setVisibility(View.GONE);
+                        frmBorder.setTag(false);
+                    }
+                }, borderVisibilityDelay);
             }
         });
         emojiRootView.setOnTouchListener(multiTouchListener);
@@ -578,6 +643,11 @@ public class PhotoEditor implements BrushViewChangeListener {
                 imgClose.setVisibility(View.GONE);
             }
         }
+    }
+
+    @UiThread
+    public void showHelperBox(){
+
     }
 
     /**

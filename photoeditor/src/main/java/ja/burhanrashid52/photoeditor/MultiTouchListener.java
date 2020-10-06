@@ -1,7 +1,9 @@
 package ja.burhanrashid52.photoeditor;
 
 import android.graphics.Rect;
+
 import androidx.annotation.Nullable;
+
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -204,6 +206,9 @@ class MultiTouchListener implements OnTouchListener {
 
         @Override
         public boolean onScaleBegin(View view, ScaleGestureDetector detector) {
+            if (mOnGestureControl != null)
+                mOnGestureControl.onScaleBegin();
+
             mPivotX = detector.getFocusX();
             mPivotY = detector.getFocusY();
             mPrevSpanVector.set(detector.getCurrentSpanVector());
@@ -223,6 +228,12 @@ class MultiTouchListener implements OnTouchListener {
             info.maximumScale = maximumScale;
             move(view, info);
             return !mIsTextPinchZoomable;
+        }
+
+        @Override
+        public void onScaleEnd(View view, ScaleGestureDetector detector) {
+            if (mOnGestureControl != null)
+                mOnGestureControl.onScaleEnd();
         }
     }
 
@@ -247,6 +258,10 @@ class MultiTouchListener implements OnTouchListener {
         void onClick();
 
         void onLongClick();
+
+        void onScaleBegin();
+
+        void onScaleEnd();
     }
 
     void setOnGestureControl(OnGestureControl onGestureControl) {

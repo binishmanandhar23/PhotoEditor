@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.widget.TextView;
 
 public class TextStyleBuilderTest {
 
@@ -88,7 +87,7 @@ public class TextStyleBuilderTest {
         builder.withBackgroundColor(321);
         builder.withTextAppearance(144);
 
-        final TextView textView = Mockito.mock(TextView.class);
+        final MagicTextView textView = Mockito.mock(MagicTextView.class);
         builder.applyStyle(textView);
 
         Assert.assertTrue(builder.textColorApplied);
@@ -104,7 +103,7 @@ public class TextStyleBuilderTest {
     public void testApplyBackgroundDrawableStyleShouldCallBackgroundDrawableApplyMethod() {
         final MockTextStyleBuilder builder = new MockTextStyleBuilder();
 
-        final TextView textView = Mockito.mock(TextView.class);
+        final MagicTextView textView = Mockito.mock(MagicTextView.class);
         builder.withBackgroundDrawable(new BitmapDrawable());
         builder.applyStyle(textView);
 
@@ -121,7 +120,7 @@ public class TextStyleBuilderTest {
     public void testApplyStyleShouldCallNoOneApplyMethod() {
         final MockTextStyleBuilder builder = new MockTextStyleBuilder();
 
-        final TextView textView = Mockito.mock(TextView.class);
+        final MagicTextView textView = Mockito.mock(MagicTextView.class);
         builder.applyStyle(textView);
 
         Assert.assertFalse(builder.textColorApplied);
@@ -143,37 +142,37 @@ public class TextStyleBuilderTest {
         boolean textAppearanceApplied = false;
 
         @Override
-        protected void applyTextSize(TextView textView, float size) {
+        protected void applyTextSize(MagicTextView textView, float size) {
             textSizeApplied = true;
         }
 
         @Override
-        protected void applyTextColor(TextView textView, int color) {
+        protected void applyTextColor(MagicTextView textView, int color) {
             textColorApplied = true;
         }
 
         @Override
-        protected void applyGravity(TextView textView, int gravity) {
+        protected void applyGravity(MagicTextView textView, int gravity) {
             gravityApplied = true;
         }
 
         @Override
-        protected void applyFontFamily(TextView textView, Typeface typeface) {
+        protected void applyFontFamily(MagicTextView textView, Typeface typeface) {
             textFontApplied = true;
         }
 
         @Override
-        protected void applyTextAppearance(TextView textView, int styleAppearance) {
+        protected void applyTextAppearance(MagicTextView textView, int styleAppearance) {
             textAppearanceApplied = true;
         }
 
         @Override
-        protected void applyBackgroundColor(TextView textView, int color) {
+        protected void applyBackgroundColor(MagicTextView textView, int color) {
             backgroundColorApplied = true;
         }
 
         @Override
-        protected void applyBackgroundDrawable(TextView textView, Drawable bg) {
+        protected void applyBackgroundDrawable(MagicTextView textView, Drawable bg) {
             backgroundDrawableApplied = true;
         }
     }
