@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import ja.burhanrashid52.photoeditor.PhotoFilter;
 import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.TextStyleBuilder;
 import ja.burhanrashid52.photoeditor.ViewType;
+import ja.burhanrashid52.photoeditor.models.StrokeProperties;
 
 public class EditImageActivity extends BaseActivity implements OnPhotoEditorListener,
         View.OnClickListener,
@@ -404,6 +406,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                     public void onDone(String inputText, int colorCode) {
                         final TextStyleBuilder styleBuilder = new TextStyleBuilder();
                         styleBuilder.withTextColor(colorCode);
+                        styleBuilder.withStrokeWidthColor(new StrokeProperties(2f, Color.parseColor("#000000"))); //For Stroke Width & Color [Remove this if your don't want to add any strokes]
 
                         mPhotoEditor.addText(inputText, styleBuilder);
                         mTxtCurrentTool.setText(R.string.label_text);
